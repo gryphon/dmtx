@@ -162,7 +162,7 @@ module Dmtx
           if first_byte
             result << FNC1_CODEWORD
           else
-            result << c
+            result << c + 1
           end
         else
           result << c + 1
