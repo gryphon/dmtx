@@ -151,6 +151,7 @@ module Dmtx
 
     def gs1_encode(t)
       bytes, result = t.bytes, []
+      first_byte = true
       while c = bytes.shift
         if !bytes.empty? && c > 47 && c < 58 && bytes.first > 47 && bytes.first < 58
           result << (c - 48) * 10 + bytes.shift + 82
@@ -158,10 +159,15 @@ module Dmtx
           result << 235
           result << ((c - 127) & 255)
         elsif c == FNC1
-          result << FNC1_CODEWORD
+          if first_byte
+            result << FNC1_CODEWORD
+          else
+            result << c
+          end
         else
           result << c + 1
         end
+        first_byte = false
       end
       result
     end
